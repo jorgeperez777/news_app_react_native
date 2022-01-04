@@ -7,17 +7,12 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import moment from 'moment-timezone';
-import 'moment/locale/es-mx';
+import {parseDateNews} from '../methods/formatDate';
 
 const ContainerNewCard = props => {
   const {item} = props;
   let url_image =
     item.media.images.length == 0 ? null : item.media.images[0].url;
-  let dateFormatUTC = moment.utc(item.publishDate);
-  let dateFormatTZ = moment
-    .tz(dateFormatUTC, 'America/cancun')
-    .format('DD MMM YYYY hh:mm a');
   return (
     <TouchableNativeFeedback style={styles.buttonContainer}>
       <View>
@@ -30,7 +25,9 @@ const ContainerNewCard = props => {
         <Text style={styles.titleStyle} numberOfLines={3} ellipsizeMode="tail">
           {item.title}
         </Text>
-        <Text style={styles.dateNewStyle}>{dateFormatTZ}</Text>
+        <Text style={styles.dateNewStyle}>
+          {parseDateNews(item.publishDate)}
+        </Text>
         <View style={styles.rowSourceShared}>
           <Text style={styles.sourceStyle}>{item.sourceName}</Text>
           <Icon
