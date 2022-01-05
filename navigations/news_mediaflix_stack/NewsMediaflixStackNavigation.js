@@ -4,10 +4,12 @@ import NewsMediaflix from '../../src/screens/news_mediaflix/NewsMediaflix';
 import ShowNewsMediaflix from '../../src/screens/news_mediaflix/ShowNewsMediaflix';
 
 const Stack = createNativeStackNavigator();
-
 const NewsMediaflixStackNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+      }}>
       <Stack.Screen
         name="NewsMedia"
         component={NewsMediaflix}
@@ -16,7 +18,7 @@ const NewsMediaflixStackNavigation = () => {
       <Stack.Screen
         name="ShowNews"
         component={ShowNewsMediaflix}
-        options={{title: 'Detalles'}}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

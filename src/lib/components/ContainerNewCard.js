@@ -10,11 +10,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {parseDateNews} from '../methods/formatDate';
 
 const ContainerNewCard = props => {
-  const {item} = props;
+  const {item, onPress} = props;
   let url_image =
     item.media.images.length == 0 ? null : item.media.images[0].url;
   return (
-    <TouchableNativeFeedback style={styles.buttonContainer}>
+    <TouchableNativeFeedback style={styles.buttonContainer} onPress={onPress}>
       <View>
         <Image
           style={styles.imageStyle}
@@ -35,9 +35,7 @@ const ContainerNewCard = props => {
             size={25}
             color="black"
             style={styles.iconStyle}
-            onPress={() => {
-              // alert('Compartir')
-            }}
+            onPress={() => {}}
           />
         </View>
       </View>
@@ -56,6 +54,7 @@ const styles = StyleSheet.create({
     minWidth: '100%',
     minHeight: 250,
     paddingHorizontal: 0,
+    backgroundColor: '#aaa',
   },
   titleStyle: {
     paddingVertical: 10,

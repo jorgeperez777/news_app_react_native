@@ -1,11 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import SingleHeader from '../../lib/components/SingleHeader';
+import {HeadersMainViewLiveStream} from '../../lib/components/HeadersMainView';
 
 const LiveStream = () => {
   return (
     <View>
-      <SingleHeader title="Tv en Vivo"colorBgStatusBar={'#fff'}barStyle={'dark-content'}colorBgHeader={'#fff'}colorTitle={'#000'}/>
+      <HeadersMainViewLiveStream
+        title="Tv en Vivo"
+        colorBgStatusBar={'#fff'}
+        barStyle={'dark-content'}
+        colorBgHeader={'#fff'}
+        colorTitle={'#000'}
+      />
       <Text>LiveStream</Text>
     </View>
   );
