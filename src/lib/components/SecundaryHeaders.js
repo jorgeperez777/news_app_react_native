@@ -36,7 +36,7 @@ export const ShowNewHeader = ({...props}) => {
             onPress={() => {
               navigation.goBack();
             }}
-            background={TouchableNativeFeedback.Ripple('', true)}>
+            background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)', true)}>
             <View>
               <Icon
                 name="arrow-back-ios"
@@ -60,7 +60,10 @@ export const ShowNewHeader = ({...props}) => {
           <View style={{paddingHorizontal: 10}}>
             <TouchableNativeFeedback
               onPress={onPressRemove}
-              background={TouchableNativeFeedback.Ripple('', true)}>
+              background={TouchableNativeFeedback.Ripple(
+                'rgba(0,0,0,.2)',
+                true,
+              )}>
               <View>
                 <Icon
                   name="remove"
@@ -73,7 +76,7 @@ export const ShowNewHeader = ({...props}) => {
           </View>
           <TouchableNativeFeedback
             onPress={onPressAdd}
-            background={TouchableNativeFeedback.Ripple('', true)}>
+            background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)', true)}>
             <View>
               <Icon
                 name="add"

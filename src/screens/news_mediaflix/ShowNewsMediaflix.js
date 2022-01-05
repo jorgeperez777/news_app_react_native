@@ -98,19 +98,13 @@ const ShowContent = props => {
     </View>
   ) : (
     <View>
-      {/* <Image
-        source={{
-          uri: url_image,
-        }}
-        style={styles.imageStyle}
-      /> */}
-
       <ImageBackground
         style={styles.imageStyle}
         source={{
           uri: url_image,
         }}>
         <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)')}
           onPress={() => {
             console.log('Go view youtube');
           }}>
@@ -130,6 +124,25 @@ const ShowContent = props => {
       <Text style={styles.titleStyle}>{item.title}</Text>
       <Text style={styles.dateStyle}>{parseDateNews(item.publishDate)}</Text>
       <Text style={styles.sourceStyle}>{item.source.name}</Text>
+      <View style={{padding: 5, flexDirection: 'row'}}>
+        <View style={{padding: 10}}>
+          <ButtonCustom
+            iconName="bookmark-outline"
+            onPress={() => {
+              console.log('save note');
+            }}
+          />
+        </View>
+        <View style={{padding: 10}}>
+          <ButtonCustom
+            iconName="share"
+            onPress={() => {
+              console.log('share');
+            }}
+          />
+        </View>
+      </View>
+
       <View style={styles.bodyStyle}>
         <HTMLView
           value={`<div>${item.body.replace(/(\r\n|\n|\r)/gm, '')}</div>`}
@@ -137,6 +150,20 @@ const ShowContent = props => {
         />
       </View>
     </View>
+  );
+};
+
+const ButtonCustom = props => {
+  const {onPress, iconName} = props;
+
+  return (
+    <TouchableNativeFeedback
+      background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)', true)}
+      onPress={onPress}>
+      <View>
+        <Icon name={iconName} size={25} color="black" />
+      </View>
+    </TouchableNativeFeedback>
   );
 };
 

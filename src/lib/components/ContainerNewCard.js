@@ -18,7 +18,10 @@ const ContainerNewCard = props => {
   let hasVideo = item.media.videos.length > 0 ? true : false;
 
   return (
-    <TouchableNativeFeedback style={styles.buttonContainer} onPress={onPress}>
+    <TouchableNativeFeedback
+      style={styles.buttonContainer}
+      onPress={onPress}
+      background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)')}>
       <View>
         <View>
           <ImageBackground
@@ -27,6 +30,7 @@ const ContainerNewCard = props => {
               uri: url_image,
             }}>
             <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)')}
               onPress={
                 hasVideo
                   ? () => {
@@ -56,14 +60,24 @@ const ContainerNewCard = props => {
         </Text>
         <View style={styles.rowSourceShared}>
           <Text style={styles.sourceStyle}>{item.sourceName}</Text>
-          <Icon
-            name="share"
-            size={25}
-            color="black"
-            style={styles.iconStyle}
-            onPress={() => {}}
-          />
+          <View style={{padding: 10}}>
+            <ButtonCustom iconName="share" onPress={() => {}} />
+          </View>
         </View>
+      </View>
+    </TouchableNativeFeedback>
+  );
+};
+
+const ButtonCustom = props => {
+  const {onPress, iconName} = props;
+
+  return (
+    <TouchableNativeFeedback
+      background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)', true)}
+      onPress={onPress}>
+      <View>
+        <Icon name={iconName} size={25} color="black" />
       </View>
     </TouchableNativeFeedback>
   );

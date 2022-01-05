@@ -26,7 +26,7 @@ export const HeadersMainViewNews = props => {
         <View>
           <TouchableNativeFeedback
             onPress={() => {}}
-            background={TouchableNativeFeedback.Ripple('', true)}>
+            background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)', true)}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Icon
                 name="search"
