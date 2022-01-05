@@ -5,6 +5,8 @@ import {
   View,
   TouchableNativeFeedback,
   Image,
+  ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {parseDateNews} from '../methods/formatDate';
@@ -13,15 +15,39 @@ const ContainerNewCard = props => {
   const {item, onPress} = props;
   let url_image =
     item.media.images.length == 0 ? null : item.media.images[0].url;
+  let hasVideo = item.media.videos.length > 0 ? true : false;
+
   return (
     <TouchableNativeFeedback style={styles.buttonContainer} onPress={onPress}>
       <View>
-        <Image
-          style={styles.imageStyle}
-          source={{
-            uri: url_image,
-          }}
-        />
+        <View>
+          <ImageBackground
+            style={styles.imageStyle}
+            source={{
+              uri: url_image,
+            }}>
+            <TouchableNativeFeedback
+              onPress={
+                hasVideo
+                  ? () => {
+                      console.log('Go view youtube');
+                    }
+                  : onPress
+              }>
+              <View
+                style={{
+                  backgroundColor: 'rgba(0,0,0,.6)',
+                  minWidth: '100%',
+                  minHeight: 250,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  display: hasVideo ? null : 'none',
+                }}>
+                <Icon name="play-circle-outline" size={60} color="white" />
+              </View>
+            </TouchableNativeFeedback>
+          </ImageBackground>
+        </View>
         <Text style={styles.titleStyle} numberOfLines={3} ellipsizeMode="tail">
           {item.title}
         </Text>

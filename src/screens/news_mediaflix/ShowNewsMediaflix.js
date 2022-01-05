@@ -6,12 +6,15 @@ import {
   StyleSheet,
   Text,
   View,
+  ImageBackground,
+  TouchableNativeFeedback,
 } from 'react-native';
 import {axiosRequest} from '../../lib/commons';
 import {ShowNewHeader} from '../../lib/components/SecundaryHeaders';
 import {parseDateNews} from '../../lib/methods/formatDate';
 import {GET_NEW_BY_ID} from '../../lib/queries/news_mediaflix_queries';
 import HTMLView from 'react-native-htmlview';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ShowNewsMediaflix = ({...props}) => {
   const {route, navigation} = props;
@@ -66,6 +69,8 @@ const ShowContent = props => {
       : item.media.images.length == 0
       ? null
       : item.media.images[0].url;
+  let hasVideo =
+    item == null ? null : item.media.videos.length > 0 ? true : false;
 
   const htmlStyleSheet = StyleSheet.create({
     p: {
@@ -93,12 +98,35 @@ const ShowContent = props => {
     </View>
   ) : (
     <View>
-      <Image
+      {/* <Image
         source={{
           uri: url_image,
         }}
         style={styles.imageStyle}
-      />
+      /> */}
+
+      <ImageBackground
+        style={styles.imageStyle}
+        source={{
+          uri: url_image,
+        }}>
+        <TouchableNativeFeedback
+          onPress={() => {
+            console.log('Go view youtube');
+          }}>
+          <View
+            style={{
+              backgroundColor: 'rgba(0,0,0,.6)',
+              minWidth: '100%',
+              minHeight: 250,
+              alignItems: 'center',
+              justifyContent: 'center',
+              display: hasVideo ? null : 'none',
+            }}>
+            <Icon name="play-circle-outline" size={60} color="white" />
+          </View>
+        </TouchableNativeFeedback>
+      </ImageBackground>
       <Text style={styles.titleStyle}>{item.title}</Text>
       <Text style={styles.dateStyle}>{parseDateNews(item.publishDate)}</Text>
       <Text style={styles.sourceStyle}>{item.source.name}</Text>
