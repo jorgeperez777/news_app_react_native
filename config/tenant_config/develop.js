@@ -18,3 +18,4 @@ export const DEFAULT_CONFIG_DEVICE = {
 
 export const TENANT_CUSTOM = 'Y2FuYWwxMA==';
 export const BASE_URL = 'http://honey-kong-lb.j0cpeqen0.at.d2c.io/mediaflix';
+export const BASE_NOTE_URL_SHARE = 'https://noticias.canal10.tv/nota/';

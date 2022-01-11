@@ -10,13 +10,20 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {parseDateNews} from '../methods/formatDate';
+import HTMLView from 'react-native-htmlview';
+import {shareNote} from '../commons';
+import {BASE_NOTE_URL_SHARE} from '../../../config/tenant_config/develop';
 
 const ContainerNewCard = props => {
   const {item, onPress} = props;
   let url_image =
     item.media.images.length == 0 ? null : item.media.images[0].url;
   let hasVideo = item.media.videos.length > 0 ? true : false;
-
+  // console.log(item.source.slug);
+  let urlShared =
+    item.source.slug == null
+      ? null
+      : `${BASE_NOTE_URL_SHARE}${item.source.slug}/${item.slug_name}`;
   return (
     <TouchableNativeFeedback
       style={styles.buttonContainer}
@@ -58,16 +65,41 @@ const ContainerNewCard = props => {
         <Text style={styles.dateNewStyle}>
           {parseDateNews(item.publishDate)}
         </Text>
+        {/* <View style={styles.bodyStyle}>
+          <HTMLView
+            value={`<div>${item.body.replace(/(\r\n|\n|\r)/gm, '')}</div>`}
+            renderNode={renderNode}
+            stylesheet={htmlStyleSheet}
+          />
+        </View> */}
         <View style={styles.rowSourceShared}>
           <Text style={styles.sourceStyle}>{item.sourceName}</Text>
           <View style={{padding: 10}}>
-            <ButtonCustom iconName="share" onPress={() => {}} />
+            {urlShared && (
+              <ButtonCustom
+                iconName="share"
+                onPress={() => {
+                  shareNote(urlShared, item.title);
+                }}
+              />
+            )}
           </View>
         </View>
       </View>
     </TouchableNativeFeedback>
   );
 };
+
+function renderNode(node, index) {
+  if (node.class == 'p') {
+    console.log(node);
+    return (
+      <View key={index}>
+        <Text numberOfLines={2}>{node}</Text>
+      </View>
+    );
+  }
+}
 
 const ButtonCustom = props => {
   const {onPress, iconName} = props;
@@ -84,6 +116,17 @@ const ButtonCustom = props => {
 };
 
 export default ContainerNewCard;
+
+const htmlStyleSheet = StyleSheet.create({
+  p: {
+    color: 'black',
+    fontSize: 10,
+  },
+  b: {
+    color: 'black',
+    fontSize: 10,
+  },
+});
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -124,5 +167,8 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     paddingRight: 10,
+  },
+  bodyStyle: {
+    padding: 10,
   },
 });

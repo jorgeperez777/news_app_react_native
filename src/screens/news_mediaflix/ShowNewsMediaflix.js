@@ -9,12 +9,13 @@ import {
   ImageBackground,
   TouchableNativeFeedback,
 } from 'react-native';
-import {axiosRequest} from '../../lib/commons';
+import {axiosRequest, shareNote} from '../../lib/commons';
 import {ShowNewHeader} from '../../lib/components/SecundaryHeaders';
 import {parseDateNews} from '../../lib/methods/formatDate';
 import {GET_NEW_BY_ID} from '../../lib/queries/news_mediaflix_queries';
 import HTMLView from 'react-native-htmlview';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {BASE_NOTE_URL_SHARE} from '../../../config/tenant_config/develop';
 
 const ShowNewsMediaflix = ({...props}) => {
   const {route, navigation} = props;
@@ -72,15 +73,16 @@ const ShowContent = props => {
   let hasVideo =
     item == null ? null : item.media.videos.length > 0 ? true : false;
 
-  const htmlStyleSheet = StyleSheet.create({
-    p: {
-      color: 'black',
-      fontSize: changeFontSize,
-    },
-    b: {
-      color: 'black',
-      fontSize: changeFontSize,
-    },
+  let urlShared =
+    item == null
+      ? null
+      : item.source.slug == null
+      ? null
+      : `${BASE_NOTE_URL_SHARE}${item.source.slug}/${item.slug_name}`;
+
+  const styleComponent = StyleSheet.create({
+    color: 'black',
+    fontSize: changeFontSize,
   });
 
   return item == null ? (
@@ -134,19 +136,21 @@ const ShowContent = props => {
           />
         </View>
         <View style={{padding: 10}}>
-          <ButtonCustom
-            iconName="share"
-            onPress={() => {
-              console.log('share');
-            }}
-          />
+          {urlShared && (
+            <ButtonCustom
+              iconName="share"
+              onPress={() => {
+                shareNote(urlShared, item.title);
+              }}
+            />
+          )}
         </View>
       </View>
 
       <View style={styles.bodyStyle}>
         <HTMLView
           value={`<div>${item.body.replace(/(\r\n|\n|\r)/gm, '')}</div>`}
-          stylesheet={htmlStyleSheet}
+          textComponentProps={{style: styleComponent}}
         />
       </View>
     </View>

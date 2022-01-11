@@ -36,6 +36,7 @@ query($id: ID!){
   source{
     id
     name
+    slug
   }
   media{
     images{
