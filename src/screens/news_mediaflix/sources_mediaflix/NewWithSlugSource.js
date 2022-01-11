@@ -8,27 +8,30 @@ import {
   ActivityIndicator,
   StatusBar,
   RefreshControl,
+  ScrollView,
 } from 'react-native';
-import {axiosRequest} from '../../../src/lib/commons';
-import ContainerNewCard from '../../lib/components/ContainerNewCard';
-import {HeadersMainViewNews} from '../../lib/components/HeadersMainView';
-import SourcesList from '../../lib/components/SourcesList';
-import {GET_NEWS_LIST} from '../../lib/queries/news_mediaflix_queries';
-import {GET_SOURCES_LIST} from '../../lib/queries/sources_news_querie';
+import {axiosRequest} from '../../../../src/lib/commons';
+import ContainerNewCard from '../../../lib/components/ContainerNewCard';
+import {HeadersMainViewNews} from '../../../lib/components/HeadersMainView';
+import {ShowSourceNewsList} from '../../../lib/components/SecundaryHeaders';
+import SourcesList from '../../../lib/components/SourcesList';
+import {GET_NEWS_LIST} from '../../../lib/queries/news_mediaflix_queries';
+import {GET_SOURCES_LIST} from '../../../lib/queries/sources_news_querie';
 
-const NewsMediaflix = ({...props}) => {
-  const {navigation} = props;
+const NewWithSlugSource = ({...props}) => {
+  const {route, navigation} = props;
   const [newsMedia, setNewsMedia] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [sourcesMedia, setSourcesMedia] = useState([]);
+  //   console.log(route);
 
   const getNews = () => {
     setIsLoading(true);
     axiosRequest(GET_NEWS_LIST, {
       version_image: 'thumb',
       filter: {
+        source_slug: route.params.slug,
         publish_movil: 'TRUE',
         publish_date_movil: 'TRUE',
         pagination: {
@@ -48,17 +51,6 @@ const NewsMediaflix = ({...props}) => {
       .catch(function (error) {
         setIsLoading(false);
       });
-    axiosRequest(GET_SOURCES_LIST, {
-      filter: {
-        active: 'TRUE',
-      },
-    })
-      .then(result => {
-        if (result.status == 200) {
-          setSourcesMedia(result.data.data.sources);
-        }
-      })
-      .catch(function (error) {});
   };
 
   const renderItem = ({item}) => {
@@ -78,10 +70,14 @@ const NewsMediaflix = ({...props}) => {
 
   const renderLoader = () => {
     return isLoading ? (
-      <View>
+      <View style={styles.loaderStyle}>
         <ActivityIndicator size="large" color="#aaa" />
       </View>
     ) : null;
+  };
+
+  const loadMoreItem = () => {
+    setCurrentPage(currentPage + 1);
   };
   const emptyRender = () => {
     return (
@@ -90,60 +86,28 @@ const NewsMediaflix = ({...props}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {!isLoading && (
-          <Text>{refreshing ? '' : 'Sin contenido disponible'}</Text>
-        )}
+        {!isLoading && <Text>Sin contenido disponible</Text>}
       </View>
     );
-  };
-
-  const loadMoreItem = () => {
-    setCurrentPage(currentPage + 1);
   };
 
   useEffect(() => {
     getNews();
   }, [currentPage]);
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    setNewsMedia([]);
-    axiosRequest(GET_NEWS_LIST, {
-      version_image: 'thumb',
-      filter: {
-        publish_movil: 'TRUE',
-        publish_date_movil: 'TRUE',
-        pagination: {
-          size_movil: '10',
-          page_movil: '1',
-        },
-      },
-    })
-      .then(result => {
-        if (result.status == 200) {
-          setNewsMedia(result.data.data.news);
-          setRefreshing(false);
-        } else {
-          setRefreshing(false);
-        }
-      })
-      .catch(function (error) {
-        setRefreshing(false);
-      });
-  };
-
   return (
-    <>
-      <HeadersMainViewNews
-        title="Noticias"
+    <View
+      style={{
+        flex: 1,
+      }}>
+      <ShowSourceNewsList
+        title={route.params.title}
         colorBgStatusBar={'#fff'}
         barStyle={'dark-content'}
         colorBgHeader={'#fff'}
         colorTitle={'#000'}
+        navigation={navigation}
       />
-      {sourcesMedia && (
-        <SourcesList data={sourcesMedia} navigation={navigation} />
-      )}
       <FlatList
         data={newsMedia}
         renderItem={renderItem}
@@ -151,21 +115,19 @@ const NewsMediaflix = ({...props}) => {
         ListFooterComponent={renderLoader}
         onEndReached={loadMoreItem}
         onEndReachedThreshold={0.1}
-        style={styles.itemFlatListStyle}
-        contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
         ListEmptyComponent={emptyRender}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+        style={styles.itemFlatListStyle}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   itemFlatListStyle: {
     backgroundColor: '#fff',
+    flex: 1,
   },
 });
 
-export default NewsMediaflix;
+export default NewWithSlugSource;

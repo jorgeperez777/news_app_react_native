@@ -73,7 +73,7 @@ const ContainerNewCard = props => {
           />
         </View> */}
         <View style={styles.rowSourceShared}>
-          <Text style={styles.sourceStyle}>{item.sourceName}</Text>
+          <Text style={styles.sourceStyle}>{item.source.name}</Text>
           <View style={{padding: 10}}>
             {urlShared && (
               <ButtonCustom
@@ -90,17 +90,6 @@ const ContainerNewCard = props => {
   );
 };
 
-function renderNode(node, index) {
-  if (node.class == 'p') {
-    console.log(node);
-    return (
-      <View key={index}>
-        <Text numberOfLines={2}>{node}</Text>
-      </View>
-    );
-  }
-}
-
 const ButtonCustom = props => {
   const {onPress, iconName} = props;
 
@@ -116,17 +105,6 @@ const ButtonCustom = props => {
 };
 
 export default ContainerNewCard;
-
-const htmlStyleSheet = StyleSheet.create({
-  p: {
-    color: 'black',
-    fontSize: 10,
-  },
-  b: {
-    color: 'black',
-    fontSize: 10,
-  },
-});
 
 const styles = StyleSheet.create({
   buttonContainer: {
