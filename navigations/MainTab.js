@@ -28,6 +28,9 @@ const MainTab = ({...props}) => {
       <Tabs.Navigator
         initialRouteName={'news_tab_item'}
         screenOptions={({route}) => ({
+          tabBarLabelStyle: {
+            fontSize: 13,
+          },
           tabBarIcon: ({color}) => screenOptionsIcons(route, color),
         })}>
         <Tabs.Screen

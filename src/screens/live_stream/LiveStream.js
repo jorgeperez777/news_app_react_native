@@ -4,7 +4,7 @@ import {HeadersMainViewLiveStream} from '../../lib/components/HeadersMainView';
 
 const LiveStream = () => {
   return (
-    <View>
+    <View style={{backgroundColor: '#fff', flex: 1}}>
       <HeadersMainViewLiveStream
         title="Tv en Vivo"
         colorBgStatusBar={'#fff'}

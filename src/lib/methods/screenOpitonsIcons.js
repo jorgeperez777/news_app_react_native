@@ -24,5 +24,5 @@ export const screenOptionsIcons = (route, color) => {
       break;
   }
 
-  return <Icon name={iconName} color={color} size={24} />;
+  return <Icon name={iconName} color={color} size={30} />;
 };
